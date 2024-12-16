@@ -1,12 +1,15 @@
-import { useLocation } from "react-router-dom"
-import NavbarTop from "../components/NavbarTop";
-import NavbarBottom from "../components/NavbarBottom";
-import SearchbarTop from "../components/SearchbarTop";
+import { useLocation } from 'react-router-dom';
+import NavbarTop from '../components/NavbarTop';
+import NavbarBottom from '../components/NavbarBottom';
+import SearchbarTop from '../components/SearchbarTop';
 
 const MainLayout = ({ children }) => {
-  
   const location = useLocation();
-  const showSearchbar = location.pathname === '/' || location.path === '/list';
+
+  const showSearchbar =
+    location.pathname === '/' || // Static match for Home
+    location.pathname === '/list' || // Static match for List
+    location.pathname.startsWith('/book');
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -19,7 +22,13 @@ const MainLayout = ({ children }) => {
       {showSearchbar && <SearchbarTop />}
 
       {/* Main Content */}
-      <main className="flex-grow container mx-auto p-4 mt-16">{children}</main>
+      <main
+        className={`flex-grow container mx-auto p-4 ${
+          showSearchbar ? 'mt-16' : ''
+        }`}
+      >
+        {children}
+      </main>
 
       {/* Navbar for smaller displays */}
       <div className="block md:hidden">
@@ -29,4 +38,4 @@ const MainLayout = ({ children }) => {
   );
 };
 
-export default MainLayout
+export default MainLayout;
